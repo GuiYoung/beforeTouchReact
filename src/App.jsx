@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {sculptureList} from "./data";
 import {GetIP,CheckLocation} from "./utils";
-import axios from "_axios@0.27.2@axios";
+import axios from "axios";
 
 // function CheckButton(){
 //     function handleCheckClick(e){
@@ -14,7 +14,6 @@ let okData;
 
 function DataArea(){
     const [data,setData] = useState("");
-    GetIP().then(ipAddr => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 let latitude = position.coords.latitude
@@ -44,7 +43,6 @@ function DataArea(){
         } else {
             console.log('你的浏览器不支持当前地理位置信息获取')
         }
-    });
     return (
         <>
             <ul >{data}</ul>

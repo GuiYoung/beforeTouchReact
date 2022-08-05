@@ -1,18 +1,27 @@
 import {useState} from "react";
 import {sculptureList} from "./data";
+import {useRef} from "react";
+import Select from 'react-select';
 import {CheckLocation} from "./utils";
 import axios from "axios";
 
-// function CheckButton(){
-//     function handleCheckClick(e){
-//         CheckPostion
-//     }
-// }
-
 let okData;
 
+const options = [
+    {value:'school',label:'school'},
+    {value:'mall',label:'mall'},
+    {value:'trafficHub',label:'trafficHub'},
+    {value:'company',label:'company'},
+]
 
-function DataArea(){
+
+function DataArea({venueType}){
+    const unitNameRef = useRef("");
+    function handleUnitNameChange(e){
+        okData.unit_name = e.target.value
+    }
+
+    console.log(venueType)
     const [data,setData] = useState("");
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -40,7 +49,12 @@ function DataArea(){
                     okData.ip=wr.addrInfo.ip
                     okData.latitude=latitude
                     okData.longitude=longitude
-                    okData.unit_name=wr.addrInfo.unit_name
+
+                    unitNameRef.current = wr.addrInfo.unit_name
+                    okData.unit_name = wr.addrInfo.unit_name
+
+                    okData.venueType=venueType
+                    console.log(unitNameRef.current)
                 }).catch()
             }, function (error){console.log({"error":error})},{enableHighAccuracy: true})
         } else {
@@ -49,14 +63,23 @@ function DataArea(){
     return (
         <>
             <ul >{data}</ul>
+            <input id="unitNameInput" type="text" style={{width: '100%'}} defaultValue={unitNameRef.current} onChange={handleUnitNameChange}  />
         </>
     );
 }
 
 export default function APP(){
     const [showData,setShowData] = useState(true)
+    const selectedOptionRef = useRef(options[0]);
+
+    let resp = (
+        <>
+        </>
+    );
+
     function handleUploadClick(e){
         setShowData(!showData)
+
     }
     function handleOKClick(e){
         setShowData(!showData)
@@ -69,12 +92,22 @@ export default function APP(){
         CheckLocation(okData)
     }
 
-    return (
+    function handleVenueTypeChange(e){
+        selectedOptionRef.current = e.value
+    }
+
+    resp = (
         <>
             {showData && <button onClick={handleUploadClick}>upload</button>}
-            {!showData && <DataArea/>}
+            {!showData && <DataArea venueType={selectedOptionRef.current.value}/>}
+            {!showData && <Select
+                defaultValue={selectedOptionRef.current}
+                onChange={handleVenueTypeChange}
+                options={options}
+            />}
             {!showData && <button onClick={handleOKClick}>OK</button>}
             {!showData && <button onClick={handleNotOKClick}>NotOK</button>}
         </>
-    )
+    );
+    return resp;
 }

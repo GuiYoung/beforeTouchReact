@@ -11,7 +11,8 @@ const options = [
     {value:'school',label:'school'},
     {value:'mall',label:'mall'},
     {value:'trafficHub',label:'trafficHub'},
-    {value:'company',label:'company'},
+    {value:'hospital',label:'hospital'},
+    {value: 'hotel', label: 'hotel'}
 ]
 
 
@@ -30,7 +31,7 @@ function DataArea({venueType}){
                 console.log(latitude)
                 console.log(longitude)
                 console.log(position.coords.accuracy)
-                axios.get('http://101.42.247.103:9001/api/v1/info/uploadInfo', {
+                axios.get('/beforetouchapi/uploadInfo', {
                     params: {
                         latitude: latitude,
                         longitude: longitude,

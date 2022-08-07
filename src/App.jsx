@@ -20,8 +20,13 @@ const options = [
 function DataArea({venueType}){
     const selectedOptionRef = useRef(options[0]);
     const unitNameRef = useRef("");
+    const wifiNameRef = useRef("")
     function handleUnitNameChange(e){
         okData.unit_name = e.target.value
+    }
+
+    function handleWifiNameChange(e){
+        okData.wifi_name = e.target.value
     }
 
     function handleVenueTypeChange(e){
@@ -61,6 +66,9 @@ function DataArea({venueType}){
                     unitNameRef.current = wr.addrInfo.unit_name
                     okData.unit_name = wr.addrInfo.unit_name
 
+                    wifiNameRef.current = ""
+                    okData.wifi_name = ""
+
                     okData.venueType=venueType
                     console.log(unitNameRef.current)
                 }).catch()
@@ -72,6 +80,7 @@ function DataArea({venueType}){
         <>
             <ul >{data}</ul>
             <input id="unitNameInput" type="text" style={{width: '100%'}} defaultValue={unitNameRef.current} onChange={handleUnitNameChange}  />
+            <input id="wifiNameInput" type="text" style={{width: '100%'}} defaultValue={unitNameRef.current} onChange={handleWifiNameChange}  />
              <Select
                 defaultValue={selectedOptionRef.current}
                 onChange={handleVenueTypeChange}

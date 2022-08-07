@@ -18,9 +18,15 @@ const options = [
 
 
 function DataArea({venueType}){
+    const selectedOptionRef = useRef(options[0]);
     const unitNameRef = useRef("");
     function handleUnitNameChange(e){
         okData.unit_name = e.target.value
+    }
+
+    function handleVenueTypeChange(e){
+        selectedOptionRef.current = e.value
+        okData.venueType = e.value
     }
 
     console.log(venueType)
@@ -66,13 +72,17 @@ function DataArea({venueType}){
         <>
             <ul >{data}</ul>
             <input id="unitNameInput" type="text" style={{width: '100%'}} defaultValue={unitNameRef.current} onChange={handleUnitNameChange}  />
+             <Select
+                defaultValue={selectedOptionRef.current}
+                onChange={handleVenueTypeChange}
+                options={options}
+            />
         </>
     );
 }
 
 export default function APP(){
     const [showData,setShowData] = useState(true)
-    const selectedOptionRef = useRef(options[0]);
 
     let resp = (
         <>
@@ -94,19 +104,13 @@ export default function APP(){
         CheckLocation(okData)
     }
 
-    function handleVenueTypeChange(e){
-        selectedOptionRef.current = e.value
-    }
+
 
     resp = (
         <>
+            {!showData && <DataArea />}
+
             {showData && <button onClick={handleUploadClick}>upload</button>}
-            {!showData && <DataArea venueType={selectedOptionRef.current.value}/>}
-            {!showData && <Select
-                defaultValue={selectedOptionRef.current}
-                onChange={handleVenueTypeChange}
-                options={options}
-            />}
             {!showData && <button onClick={handleOKClick}>OK</button>}
             {!showData && <button onClick={handleNotOKClick}>NotOK</button>}
         </>

@@ -12,7 +12,8 @@ const options = [
     {value:'mall',label:'mall'},
     {value:'trafficHub',label:'trafficHub'},
     {value:'hospital',label:'hospital'},
-    {value: 'hotel', label: 'hotel'}
+    {value: 'hotel', label: 'hotel'},
+    {value: 'shop', label: 'shop'}
 ]
 
 
